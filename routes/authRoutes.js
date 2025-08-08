@@ -33,12 +33,16 @@ router.post('/auth/login', (req, res) => {
         return res.status(403).json({ error: 'Unauthorized role' });
       }
 
+      // Simple opaque token (MVP only)
+      const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
+
       return res.json({
         id: user.id,
         email: user.email,
         firstname: user.firstname,
         lastname: user.lastname,
         role: role,
+        token,
       });
     }
   );
